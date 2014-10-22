@@ -10,5 +10,9 @@
   "license": "none",
   "dependencies": {
     "lorem-ipsum": "^1.0.1"
+  },
+  "peerDependencies": {
+  	"nodebb-plugin-github-embed": "0.3.1",
+  	"nodebb-plugin-youtube": "0.0.6"
   }
 }
