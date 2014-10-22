@@ -66,6 +66,25 @@ plugin.init = function(app, middleware, controllers, callback) {
 		});
 	};
 
+	SocketPlugins.demoday.four = function(socket, tid, callback) {
+		Topics.reply({
+			uid: socket.uid,
+			tid: tid,
+			content: '## GitHub Embedding\n\nThis sounds like a bug, let me file it now.\n\n**Edit**: You can now track it by following nodebb/nodebb#1714'
+		}, function(err, postData) {
+			var result = {
+					posts: [postData],
+					privileges: {
+						'topics:reply': true
+					},
+					'reputation:disabled': parseInt(meta.config['reputation:disabled'], 10) === 1,
+					'downvote:disabled': parseInt(meta.config['downvote:disabled'], 10) === 1,
+				};
+			
+			socket.emit('event:new_post', result);
+		});
+	};
+
 	callback();
 };
 

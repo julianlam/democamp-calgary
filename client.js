@@ -20,5 +20,12 @@ $(document).ready(function() {
 				socket.emit('plugins.demoday.three', tid);
 			}
 		});
+
+		m.bind('a a 4', function() {
+			var tid = ajaxify.variables.get('topic_id');
+			if (tid) {
+				socket.emit('plugins.demoday.four', tid);
+			}
+		});
 	});
 });
