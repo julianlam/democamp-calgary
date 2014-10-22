@@ -11,6 +11,7 @@ var SocketPlugins = module.parent.require('./socket.io/plugins'),
 
 plugin.init = function(app, middleware, controllers, callback) {
 	SocketPlugins.demoday = {};
+
 	SocketPlugins.demoday.one = function(socket, tid, callback) {
 		Topics.reply({
 			uid: socket.uid,
@@ -43,6 +44,25 @@ plugin.init = function(app, middleware, controllers, callback) {
 				tags: results.topic.tags,
 				content: results.content
 			});
+		});
+	};
+
+	SocketPlugins.demoday.three = function(socket, tid, callback) {
+		Topics.reply({
+			uid: socket.uid,
+			tid: tid,
+			content: '## Here\'s a youtube video!\n\nhttps://www.youtube.com/watch?v=lGar7KC6Wiw'
+		}, function(err, postData) {
+			var result = {
+					posts: [postData],
+					privileges: {
+						'topics:reply': true
+					},
+					'reputation:disabled': parseInt(meta.config['reputation:disabled'], 10) === 1,
+					'downvote:disabled': parseInt(meta.config['downvote:disabled'], 10) === 1,
+				};
+			
+			socket.emit('event:new_post', result);
 		});
 	};
 

@@ -13,5 +13,12 @@ $(document).ready(function() {
 				socket.emit('plugins.demoday.two', pid);
 			}
 		});
+
+		m.bind('a a 3', function() {
+			var tid = ajaxify.variables.get('topic_id');
+			if (tid) {
+				socket.emit('plugins.demoday.three', tid);
+			}
+		});
 	});
 });
