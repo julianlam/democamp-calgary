@@ -1,0 +1,14 @@
+{
+  "name": "nodebb-plugin-demoday",
+  "version": "0.0.0",
+  "description": "demoday",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "julian@nodebb.org",
+  "license": "none",
+  "dependencies": {
+    "lorem-ipsum": "^1.0.1"
+  }
+}

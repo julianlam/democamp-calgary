@@ -1,0 +1,15 @@
+{
+	"id": "nodebb-plugin-demoday",
+	"name": "demoday",
+	"description": "demoday",
+	"url": "",
+	"library": "./library.js",
+	"hooks": [
+		{
+			"hook": "static:app.load", "method": "init"
+		}
+	],
+	"scripts": [
+		"client.js"
+	]
+}
