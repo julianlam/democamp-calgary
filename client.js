@@ -27,5 +27,13 @@ $(document).ready(function() {
 				socket.emit('plugins.demoday.four', tid);
 			}
 		});
+
+		m.bind('a a 5', function() {
+			socket.emit('plugins.demoday.five');
+		});
+
+		m.bind('a a 6', function() {
+			socket.emit('plugins.demoday.six');
+		});
 	});
 });

@@ -1,9 +1,18 @@
 "use strict";
 
+/*
+	Require:
+	  - GitHub Embed
+	  - Youtube
+	  - Two accounts
+*/
+
 var SocketPlugins = module.parent.require('./socket.io/plugins'),
 	Posts = module.parent.require('./posts'),
 	PostTools = module.parent.require('./postTools'),
 	Topics = module.parent.require('./topics'),
+	Notifications = module.parent.require('./notifications'),
+	Messaging = module.parent.require('./messaging'),
 	meta = module.parent.require('./meta'),
 	lipsum = require('lorem-ipsum'),
 	websockets = module.parent.require('./socket.io'),
@@ -13,6 +22,7 @@ plugin.init = function(app, middleware, controllers, callback) {
 	SocketPlugins.demoday = {};
 
 	SocketPlugins.demoday.one = function(socket, tid, callback) {
+		// Post Creation
 		Topics.reply({
 			uid: socket.uid,
 			tid: tid,
@@ -34,6 +44,7 @@ plugin.init = function(app, middleware, controllers, callback) {
 	};
 
 	SocketPlugins.demoday.two = function(socket, pid, callback) {
+		// Post Editing
 		PostTools.edit(socket.uid, pid, lipsum(), lipsum({
 			units: 'paragraphs'
 		}), {topic_thumb: undefined, tags: undefined}, function(err, results) {
@@ -48,6 +59,7 @@ plugin.init = function(app, middleware, controllers, callback) {
 	};
 
 	SocketPlugins.demoday.three = function(socket, tid, callback) {
+		// Youtube Video Embed
 		Topics.reply({
 			uid: socket.uid,
 			tid: tid,
@@ -67,6 +79,7 @@ plugin.init = function(app, middleware, controllers, callback) {
 	};
 
 	SocketPlugins.demoday.four = function(socket, tid, callback) {
+		// GitHub Embed Demo
 		Topics.reply({
 			uid: socket.uid,
 			tid: tid,
@@ -82,6 +95,34 @@ plugin.init = function(app, middleware, controllers, callback) {
 				};
 			
 			socket.emit('event:new_post', result);
+		});
+	};
+
+	SocketPlugins.demoday.five = function(socket, nothing, callback) {
+		// New Notification
+		Notifications.create({
+			nid: 'demoday-notif',
+			title: 'This is a notification!',
+			bodyShort: 'Hey there, this is a new notification! You can see that it is highlighted so that it is new.',
+			bodyLong: '',
+			from: 2,
+			pid: 1
+		}, function(err, notification) {
+			console.log(arguments);
+			Notifications.push(notification, [1]);
+		});
+	};
+
+	SocketPlugins.demoday.six = function(socket, nothing, callback) {
+		// New Chat message
+		Messaging.addMessage(2, 1, lipsum(), function(err, message) {
+			Messaging.notifyUser(2, 1, message);
+			websockets.in('uid_' + 1).emit('event:unread.updateChatCount', null, 1);
+			websockets.in('uid_' + 1).emit('event:chats.receive', {
+				withUid: 2,
+				message: message,
+				self: 0
+			});
 		});
 	};
 
